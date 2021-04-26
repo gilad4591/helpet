@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
 
@@ -9,25 +10,32 @@ class NewMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Map arguments = ModalRoute.of(context).settings.arguments as Map;
+    final String region = arguments['region'].toString();
+    final String name = arguments['name'].toString();
 
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white30,
-          elevation: 3,
-          title: Text(
-            "HelPet - הוספת צ'אט חדש",
-            style: TextStyle(color: Colors.black),
-          ),
-          centerTitle: false,
-          leading: Image.asset('lib/assets/helpet.png'),
+      appBar: AppBar(
+        backgroundColor: Colors.white30,
+        elevation: 3,
+        title: Text(
+          "HelPet - הוספת צ'אט חדש",
+          style: TextStyle(color: Colors.black),
         ),
-        body: FormBuilder(child: TextFieldsEditor(_formKey)));
+        centerTitle: false,
+        leading: Image.asset('lib/assets/helpet.png'),
+      ),
+      body: FormBuilder(
+        key: _formKey,
+        child: TextFieldsEditor(name, region),
+      ),
+    );
   }
 }
 
 class TextFieldsEditor extends StatefulWidget {
-  const TextFieldsEditor(GlobalKey<FormBuilderState> formKey, {Key key})
-      : super(key: key);
+  const TextFieldsEditor(this.name, this.region, {Key key}) : super(key: key);
+  final String name;
+  final String region;
 
   @override
   _TextFieldsEditorState createState() => _TextFieldsEditorState();
@@ -38,67 +46,122 @@ class _TextFieldsEditorState extends State<TextFieldsEditor> {
   Widget build(BuildContext context) {
     return Container(
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
             padding: const EdgeInsets.all(20.0),
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.05,
-              ),
-              Text("הוסף צ'אט חדש"),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.05,
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.5,
-                height: MediaQuery.of(context).size.height * 0.05,
-                child: TextField(
-                  name: "Subject",
-                  lableText: "נושא",
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.05,
                 ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.01,
-              ),
-              // FormBuilderDropdown(attribute: 'Sites', items: sites)
-              Container(
-                width: MediaQuery.of(context).size.width * 0.5,
-                height: MediaQuery.of(context).size.height * 0.05,
-                child: TextField(
-                  name: "City",
-                  lableText: "עיר",
+                Text("הוסף צ'אט חדש"),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.05,
                 ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.01,
-              ),
-              // FormBuilderDropdown(attribute: 'Sites', items: sites)
-              Row(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    // height: MediaQuery.of(context).size.height * 0.05,
-                    child: TextField(
-                      name: "Text",
-                      lableText: "טקסט",
-                      multiline: true,
+                Row(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      height: MediaQuery.of(context).size.height * 0.07,
+                      child: TextField(
+                        name: "Subject",
+                        // lableText: "נושא",
+                      ),
+                    ),
+                    Text("נושא"),
+                  ],
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.01,
+                ),
+                // FormBuilderDropdown(attribute: 'Sites', items: sites)
+                Row(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      height: MediaQuery.of(context).size.height * 0.07,
+                      child: TextField(
+                        name: "City",
+                        // lableText: "עיר",
+                      ),
+                    ),
+                    Text("עיר   "),
+                  ],
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.01,
+                ),
+                // FormBuilderDropdown(attribute: 'Sites', items: sites)
+                Row(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      height: MediaQuery.of(context).size.height * 0.07,
+                      child: TextField(
+                        name: "Text",
+                        // lableText: "טקסט",
+                        multiline: true,
+                      ),
+                    ),
+                    Text("טקסט"),
+                  ],
+                ),
+                // FormBuilderDropdown(attribute: 'Sites', items: sites)
+
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.01,
+                ),
+                FlatButton(
+                  color: Colors.brown[200],
+                  child: Container(
+                    width: 135,
+                    height: 40,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          "שלח",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
                     ),
                   ),
-                  Text("טקסט")
-                ],
-              ),
-              // FormBuilderDropdown(attribute: 'Sites', items: sites)
+                  onPressed: () async {
+                    _formKey.currentState.saveAndValidate();
 
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.01,
-              ),
-            ]),
+                    await saveOnFirebase(widget.name, widget.region,
+                        _formKey.currentState.value);
+                    Navigator.pushNamed(context, '/chat', arguments: {
+                      'name': widget.name,
+                      'region': widget.region
+                    });
+                  },
+                ),
+              ],
+            ),
           ),
         ],
       ),
     );
+  }
+
+  Future<void> saveOnFirebase(String name, String region, var values) async {
+    var today = new DateTime.now();
+    await Firestore.instance
+        .collection('Chats')
+        .document(region)
+        .collection('chats_' + region)
+        .add({
+      'City': values['City'].toString(),
+      'Date': today,
+      'Text': values['Text'].toString(),
+      'Subject': values['Subject'].toString(),
+    });
   }
 }
 
