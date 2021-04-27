@@ -56,7 +56,10 @@ class _TextFieldsEditorState extends State<TextFieldsEditor> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.05,
                 ),
-                Text("הוסף צ'אט חדש"),
+                Text(
+                  "הוסף צ'אט חדש",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.05,
                 ),
@@ -113,34 +116,66 @@ class _TextFieldsEditorState extends State<TextFieldsEditor> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.01,
                 ),
-                FlatButton(
-                  color: Colors.brown[200],
-                  child: Container(
-                    width: 135,
-                    height: 40,
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.add,
-                          color: Colors.white,
+                Row(
+                  children: [
+                    FlatButton(
+                      color: Colors.brown[200],
+                      child: Container(
+                        width: 135,
+                        height: 50,
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.add,
+                              color: Colors.white,
+                            ),
+                            Text(
+                              "שלח",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
                         ),
-                        Text(
-                          "שלח",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ],
+                      ),
+                      onPressed: () async {
+                        if (_formKey.currentState.saveAndValidate()) {
+                          await saveOnFirebase(widget.name, widget.region,
+                              _formKey.currentState.value);
+                          Navigator.pushNamed(context, '/chat', arguments: {
+                            'name': widget.name,
+                            'region': widget.region
+                          });
+                        }
+                      },
                     ),
-                  ),
-                  onPressed: () async {
-                    _formKey.currentState.saveAndValidate();
-
-                    await saveOnFirebase(widget.name, widget.region,
-                        _formKey.currentState.value);
-                    Navigator.pushNamed(context, '/chat', arguments: {
-                      'name': widget.name,
-                      'region': widget.region
-                    });
-                  },
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.01,
+                    ),
+                    FlatButton(
+                      color: Colors.brown[200],
+                      child: Container(
+                        width: 135,
+                        height: 50,
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.arrow_forward,
+                              color: Colors.white,
+                            ),
+                            Text(
+                              "חזור אחורה",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.popAndPushNamed(context, '/chat', arguments: {
+                          'name': widget.name,
+                          'region': widget.region
+                        });
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -194,6 +229,10 @@ class TextField extends StatelessWidget {
               labelText: lableText,
             ),
             attribute: name,
+            validators: [
+              FormBuilderValidators.required(
+                  errorText: 'שדה זה אינו יכול להשאר ריק'),
+            ],
           ),
         ),
       ],

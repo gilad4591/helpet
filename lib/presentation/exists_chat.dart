@@ -131,6 +131,29 @@ class _ExistsChatState extends State<ExistsChat> {
                   child: Messages(region, id),
                 ),
                 Reply(name, region, id),
+                FlatButton(
+                  color: Colors.brown[200],
+                  child: Container(
+                    width: 135,
+                    height: 50,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.arrow_forward,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          "חזור אחורה",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.popAndPushNamed(context, '/chat',
+                        arguments: {'name': name, 'region': region});
+                  },
+                ),
               ],
             ),
           ],
@@ -173,7 +196,7 @@ class _ReplyState extends State<Reply> {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.5,
-      height: MediaQuery.of(context).size.width * 0.2,
+      height: MediaQuery.of(context).size.width * 0.1,
       margin: EdgeInsets.only(top: 8),
       padding: EdgeInsets.all(8),
       child: Column(

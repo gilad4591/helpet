@@ -57,16 +57,16 @@ class _HelPetState extends State<HelPet> {
                                 child: Text("כנס לצאט"),
                                 onPressed: () {
                                   _formKey.currentState.saveAndValidate();
-                                  print(_formKey);
-                                  print(_formKey.currentState.fields);
-                                  String name = _formKey
-                                      .currentState.value['ChatName']
-                                      .toString();
-                                  Navigator.pushNamed(context, '/chat',
-                                      arguments: {
-                                        'name': name,
-                                        'region': dropDown
-                                      });
+                                  if (_formKey.currentState.validate()) {
+                                    String name = _formKey
+                                        .currentState.value['ChatName']
+                                        .toString();
+                                    Navigator.pushNamed(context, '/chat',
+                                        arguments: {
+                                          'name': name,
+                                          'region': dropDown
+                                        });
+                                  }
                                 }),
                           ],
                         ),
@@ -120,8 +120,8 @@ class _TextFieldsEditorState extends State<TextFieldsEditor> {
           height: MediaQuery.of(context).size.height * 0.01,
         ),
         Container(
-          width: MediaQuery.of(context).size.width * 0.1,
-          height: MediaQuery.of(context).size.height * 0.05,
+          width: MediaQuery.of(context).size.width * 0.2,
+          height: MediaQuery.of(context).size.height * 0.1,
           child: TextField(
             name: "ChatName",
             lableText: 'שם בצאט',
@@ -173,6 +173,10 @@ class TextField extends StatelessWidget {
               labelText: lableText,
             ),
             attribute: name,
+            validators: [
+              FormBuilderValidators.required(
+                  errorText: 'שם חייב להכיל לפחות תו אחד'),
+            ],
           ),
         ),
       ],
