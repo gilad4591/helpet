@@ -88,7 +88,15 @@ class ChatPage extends StatelessWidget {
                               chatDocs.map<Widget>((DocumentSnapshot chat) {
                         i++;
                         return new MessageListTile(
-                            i, chat["Subject"].toString(), chat['City']);
+                          i,
+                          chat['Subject'].toString(),
+                          chat['City'],
+                          chat['Text'],
+                          chat.documentID,
+                          name,
+                          region,
+                          chat['creatorName'].toString(),
+                        );
                       }).toList()),
                     );
                   }),
@@ -101,18 +109,34 @@ class ChatPage extends StatelessWidget {
 }
 
 class MessageListTile extends StatelessWidget {
-  const MessageListTile(this.index, this.subject, this.city, {Key key})
+  const MessageListTile(this.index, this.subject, this.city, this.text, this.id,
+      this.myName, this.region, this.creatorName,
+      {Key key})
       : super(key: key);
-
+  final String id;
   final int index;
   final String subject;
   final String city;
+  final String myName;
+  final String region;
+  final String text;
+  final String creatorName;
   // final DateTime date;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.pushNamed(context, '/existschat', arguments: {
+          'name': myName,
+          'region': region,
+          'id': id,
+          'subject': subject,
+          'city': city,
+          'creatorName': creatorName,
+          'text': text,
+        });
+      },
       child: Container(
         width: 600,
         height: 50,

@@ -161,6 +161,7 @@ class _TextFieldsEditorState extends State<TextFieldsEditor> {
       'Date': today,
       'Text': values['Text'].toString(),
       'Subject': values['Subject'].toString(),
+      'creatorName': name,
     });
   }
 }
