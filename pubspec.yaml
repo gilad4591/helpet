@@ -32,6 +32,7 @@ dependencies:
   flutter_form_builder: ^3.14.1
   cloud_firestore: ^0.13.5
   firebase_core: ^0.4.4
+  intl: ^0.16.1
 
   
 dev_dependencies:

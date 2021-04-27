@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({Key key}) : super(key: key);
@@ -68,10 +69,10 @@ class ChatPage extends StatelessWidget {
                       .collection('Chats')
                       .document(region)
                       .collection('chats_' + region)
-                      // .orderBy(
-                      //   'Date',
-                      //   descending: true,
-                      // )
+                      .orderBy(
+                        'Date',
+                        // descending: true,
+                      )
                       .snapshots(),
                   builder: (context, chatSnapshot) {
                     if (chatSnapshot.connectionState ==
@@ -96,6 +97,7 @@ class ChatPage extends StatelessWidget {
                           name,
                           region,
                           chat['creatorName'].toString(),
+                          chat['Date'],
                         );
                       }).toList()),
                     );
@@ -110,7 +112,7 @@ class ChatPage extends StatelessWidget {
 
 class MessageListTile extends StatelessWidget {
   const MessageListTile(this.index, this.subject, this.city, this.text, this.id,
-      this.myName, this.region, this.creatorName,
+      this.myName, this.region, this.creatorName, this.date,
       {Key key})
       : super(key: key);
   final String id;
@@ -121,10 +123,12 @@ class MessageListTile extends StatelessWidget {
   final String region;
   final String text;
   final String creatorName;
-  // final DateTime date;
+  final Timestamp date;
 
   @override
   Widget build(BuildContext context) {
+    var dateToShow = date.toDate();
+    String formattedDate = DateFormat('yyyy-MM-dd – HH:mm').format(dateToShow);
     return InkWell(
       onTap: () {
         Navigator.pushNamed(context, '/existschat', arguments: {
@@ -135,6 +139,7 @@ class MessageListTile extends StatelessWidget {
           'city': city,
           'creatorName': creatorName,
           'text': text,
+          'date': formattedDate,
         });
       },
       child: Container(
@@ -142,13 +147,17 @@ class MessageListTile extends StatelessWidget {
         height: 50,
         color: index % 2 == 0 ? Colors.brown[200] : Colors.white,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text(
-              "$subject",
-              style: TextStyle(color: Colors.black),
+            Text(city),
+            Container(
+              width: 150,
+              child: Text(
+                "$subject",
+                style: TextStyle(color: Colors.black),
+              ),
             ),
-            Text(city)
+            Text(formattedDate.toString()),
           ],
         ),
       ),
