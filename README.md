@@ -21,11 +21,11 @@ All the chat conversations are seprated by regions so that you will see the rele
 * Microsoft Edge Version 90.0.818.49 (Official Build) (64-bit)
 
 ## 📷 Screenshots
-Connect to chat:
+Connect to the chat:
 
 <img src="https://user-images.githubusercontent.com/44448238/116333610-6d1a0e80-a7dc-11eb-89cd-2b0ce860bce5.png" width="500">
 
-Watch the exists chat conversation:
+Watch the existsing chat conversations:
 
 <img src="https://user-images.githubusercontent.com/44448238/116333662-828f3880-a7dc-11eb-95c3-f3df07b418cd.png" width="500">
 
