@@ -53,6 +53,34 @@ class ChatPage extends StatelessWidget {
                           arguments: {'name': name, 'region': region});
                     },
                   ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  FlatButton(
+                    color: Colors.brown[200],
+                    child: Container(
+                      width: 135,
+                      height: 40,
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.arrow_forward,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            "חזרה לדף הראשי",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(
+                        context,
+                        '/',
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
