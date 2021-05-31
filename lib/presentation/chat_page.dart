@@ -75,10 +75,7 @@ class ChatPage extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.pop(
-                        context,
-                        '/',
-                      );
+                      Navigator.of(context).popUntil(ModalRoute.withName('/'));
                     },
                   ),
                 ],

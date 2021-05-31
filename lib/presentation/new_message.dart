@@ -230,6 +230,8 @@ class TextField extends StatelessWidget {
             ),
             attribute: name,
             validators: [
+              FormBuilderValidators.maxLength(72,
+                  errorText: 'אורך הודעה לא יעלה על 72 תווים'),
               FormBuilderValidators.required(
                   errorText: 'שדה זה אינו יכול להשאר ריק'),
             ],

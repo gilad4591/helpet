@@ -150,6 +150,9 @@ class _ExistsChatState extends State<ExistsChat> {
                     ),
                   ),
                   onPressed: () {
+                    setState(() {
+                      _errorTextField = null;
+                    });
                     Navigator.popAndPushNamed(context, '/chat',
                         arguments: {'name': name, 'region': region});
                   },
@@ -174,6 +177,7 @@ class Reply extends StatefulWidget {
 
 var _enteredMessage = '';
 final _controller = new TextEditingController();
+var _errorTextField = '';
 
 Future<void> _sendMessage(String name, String id, String region) async {
   await Firestore.instance
@@ -205,14 +209,29 @@ class _ReplyState extends State<Reply> {
             controller: _controller,
             decoration: InputDecoration(
               labelText: 'שלח הודעה',
+              errorText: _errorTextField,
+              errorStyle: null,
               labelStyle: TextStyle(
                 color: Colors.brown[200],
               ),
             ),
             onChanged: (value) {
-              setState(() {
-                _enteredMessage = value;
-              });
+              if (value.length == 0) {
+                setState(() {
+                  _enteredMessage = null;
+                  _errorTextField = 'הודעה לא יכולה להיות ריקה';
+                });
+              } else if (value.length <= 72 && value.length > 0) {
+                setState(() {
+                  _errorTextField = null;
+                  _enteredMessage = value;
+                });
+              } else {
+                setState(() {
+                  _enteredMessage = null;
+                  _errorTextField = 'אורך הודעה הוא 72 תווים לכל היותר.';
+                });
+              }
             },
           ),
           IconButton(
@@ -310,7 +329,9 @@ class MessageListTile extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Text(text),
+              Flexible(
+                child: Text(text),
+              ),
               Text(
                 ' :' + "$creatorName",
                 style: TextStyle(color: Colors.black),
