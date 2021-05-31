@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({Key key}) : super(key: key);
@@ -217,7 +216,7 @@ class MessageListTile extends StatelessWidget {
                 width: 50,
                 height: 50,
               ),
-            Text(handled),
+            handled == 'לא טופל' ? Text("לא\nטופל") : Text(handled),
             Text(city),
             Container(
               width: 150,
@@ -227,6 +226,12 @@ class MessageListTile extends StatelessWidget {
               ),
             ),
             Text(formattedDate.toString()),
+            Text(
+              "+",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ],
         ),
       ),
