@@ -2,10 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+String dropDown;
+
 final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
 
-class NewMessage extends StatelessWidget {
+class NewMessage extends StatefulWidget {
   const NewMessage({Key key}) : super(key: key);
+
+  @override
+  _NewMessageState createState() => _NewMessageState();
+}
+
+List<String> animalType = ['אחר', 'חתול', 'כלב'];
+List<DropdownMenuItem> items = [];
+String dropDownValue;
+
+class _NewMessageState extends State<NewMessage> {
+  @override
+  void initState() {
+    super.initState();
+    dropDownValue = 'כלב';
+    dropDown = 'כלב';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,8 +129,31 @@ class _TextFieldsEditorState extends State<TextFieldsEditor> {
                     Text("טקסט"),
                   ],
                 ),
-                // FormBuilderDropdown(attribute: 'Sites', items: sites)
 
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.01,
+                ),
+                Row(
+                  children: [
+                    DropdownButton(
+                      onChanged: (newValue) {
+                        setState(() {
+                          dropDownValue = newValue.toString();
+                          dropDown = dropDownValue;
+                        });
+                      },
+                      value: dropDownValue,
+                      items: animalType.map((String animalTypeValue) {
+                        return (DropdownMenuItem(
+                          value: animalTypeValue,
+                          child: Text(animalTypeValue),
+                        ));
+                      }).toList(),
+                      hint: Text('סוג החיה'),
+                    ),
+                    Text("סוג החיה"),
+                  ],
+                ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.01,
                 ),
@@ -139,7 +180,7 @@ class _TextFieldsEditorState extends State<TextFieldsEditor> {
                       onPressed: () async {
                         if (_formKey.currentState.saveAndValidate()) {
                           await saveOnFirebase(widget.name, widget.region,
-                              _formKey.currentState.value);
+                              dropDownValue, _formKey.currentState.value);
                           Navigator.pushNamed(context, '/chat', arguments: {
                             'name': widget.name,
                             'region': widget.region
@@ -185,7 +226,8 @@ class _TextFieldsEditorState extends State<TextFieldsEditor> {
     );
   }
 
-  Future<void> saveOnFirebase(String name, String region, var values) async {
+  Future<void> saveOnFirebase(
+      String name, String region, String animalType, var values) async {
     var today = new DateTime.now();
     await Firestore.instance
         .collection('Chats')
@@ -198,6 +240,7 @@ class _TextFieldsEditorState extends State<TextFieldsEditor> {
       'Subject': values['Subject'].toString(),
       'creatorName': name,
       'handled': 'לא טופל',
+      'animalType': animalType,
     });
   }
 }

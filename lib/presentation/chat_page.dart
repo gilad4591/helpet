@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({Key key}) : super(key: key);
@@ -138,6 +139,7 @@ class ChatPage extends StatelessWidget {
                           chat['creatorName'].toString(),
                           chat['Date'],
                           chat['handled'],
+                          chat['animalType'],
                         );
                       }).toList()),
                     );
@@ -151,8 +153,18 @@ class ChatPage extends StatelessWidget {
 }
 
 class MessageListTile extends StatelessWidget {
-  const MessageListTile(this.index, this.subject, this.city, this.text, this.id,
-      this.myName, this.region, this.creatorName, this.date, this.handled,
+  const MessageListTile(
+      this.index,
+      this.subject,
+      this.city,
+      this.text,
+      this.id,
+      this.myName,
+      this.region,
+      this.creatorName,
+      this.date,
+      this.handled,
+      this.animalType,
       {Key key})
       : super(key: key);
   final String id;
@@ -165,6 +177,7 @@ class MessageListTile extends StatelessWidget {
   final String creatorName;
   final Timestamp date;
   final String handled;
+  final String animalType;
 
   @override
   Widget build(BuildContext context) {
@@ -182,6 +195,7 @@ class MessageListTile extends StatelessWidget {
           'text': text,
           'date': formattedDate,
           'handled': handled,
+          'animalType': animalType,
         });
       },
       child: Container(
@@ -191,6 +205,18 @@ class MessageListTile extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            if (animalType.toString() == 'כלב')
+              Image.asset(
+                'lib/assets/dogIcon.png',
+                width: 50,
+                height: 50,
+              ),
+            if (animalType.toString() == 'חתול')
+              Image.asset(
+                'lib/assets/catIcon.png',
+                width: 50,
+                height: 50,
+              ),
             Text(handled),
             Text(city),
             Container(
