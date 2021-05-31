@@ -20,6 +20,7 @@ class _ExistsChatState extends State<ExistsChat> {
     final creatorName = arguments['creatorName'].toString();
     final messageText = arguments['text'].toString();
     final region = arguments['region'].toString();
+    final handled = arguments['handled'].toString();
 
     String formattedDate = arguments['date'].toString();
 
@@ -47,13 +48,47 @@ class _ExistsChatState extends State<ExistsChat> {
                       color: Colors.black,
                       width: 1,
                     ),
-                    color: Colors.brown[200],
+                    color: Colors.brown[300],
                     borderRadius: BorderRadius.circular(12),
                   ),
                   width: MediaQuery.of(context).size.width * 0.5,
                   // color: Colors.grey,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      Row(
+                        children: [
+                          handled == 'לא טופל'
+                              ? FlatButton(
+                                  color: Colors.brown[300],
+                                  child: Container(
+                                    width: 150,
+                                    height: 50,
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.verified,
+                                          color: Colors.white,
+                                        ),
+                                        Text(
+                                          "האם הנושא טופל?",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    _handledTopic(region, id);
+                                    Navigator.popAndPushNamed(context, '/chat',
+                                        arguments: {
+                                          'name': name,
+                                          'region': region
+                                        });
+                                  },
+                                )
+                              : Text(""),
+                        ],
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -132,7 +167,7 @@ class _ExistsChatState extends State<ExistsChat> {
                 ),
                 Reply(name, region, id),
                 FlatButton(
-                  color: Colors.brown[200],
+                  color: Colors.brown[300],
                   child: Container(
                     width: 135,
                     height: 50,
@@ -178,6 +213,7 @@ class Reply extends StatefulWidget {
 var _enteredMessage = '';
 final _controller = new TextEditingController();
 var _errorTextField = '';
+var handled = 'לא טופל';
 
 Future<void> _sendMessage(String name, String id, String region) async {
   await Firestore.instance
@@ -193,6 +229,17 @@ Future<void> _sendMessage(String name, String id, String region) async {
   });
   _enteredMessage = '';
   _controller.clear();
+}
+
+Future<void> _handledTopic(String region, String id) async {
+  await Firestore.instance
+      .collection('Chats')
+      .document(region)
+      .collection('chats_' + region)
+      .document(id)
+      .updateData({
+    'handled': 'טופל',
+  });
 }
 
 class _ReplyState extends State<Reply> {
@@ -212,14 +259,14 @@ class _ReplyState extends State<Reply> {
               errorText: _errorTextField,
               errorStyle: null,
               labelStyle: TextStyle(
-                color: Colors.brown[200],
+                color: Colors.brown[300],
               ),
             ),
             onChanged: (value) {
               if (value.length == 0) {
                 setState(() {
                   _enteredMessage = null;
-                  _errorTextField = 'הודעה לא יכולה להיות ריקה';
+                  _errorTextField = 'אנא כתוב תו אחד לפחות';
                 });
               } else if (value.length <= 72 && value.length > 0) {
                 setState(() {
@@ -228,14 +275,14 @@ class _ReplyState extends State<Reply> {
                 });
               } else {
                 setState(() {
-                  _enteredMessage = null;
+                  _enteredMessage = '';
                   _errorTextField = 'אורך הודעה הוא 72 תווים לכל היותר.';
                 });
               }
             },
           ),
           IconButton(
-            color: Colors.brown[200],
+            color: Colors.brown[300],
             icon: Icon(
               Icons.send,
             ),
@@ -285,7 +332,7 @@ class Messages extends StatelessWidget {
                   color: Colors.black,
                   width: 1,
                 ),
-                color: Colors.brown[200],
+                color: Colors.brown[300],
                 // borderRadius: BorderRadius.circular(12),
               ),
               child: new ListView(
@@ -323,7 +370,7 @@ class MessageListTile extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width * 0.5,
       height: 50,
-      color: index % 2 == 0 ? Colors.brown[200] : Colors.white,
+      color: index % 2 == 0 ? Colors.brown[300] : Colors.white,
       child: Column(
         children: [
           Row(

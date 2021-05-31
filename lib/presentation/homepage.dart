@@ -176,6 +176,8 @@ class TextField extends StatelessWidget {
             validators: [
               FormBuilderValidators.required(
                   errorText: 'שם חייב להכיל לפחות תו אחד'),
+              FormBuilderValidators.maxLength(20,
+                  errorText: 'שם לא יכול להיות ארוך 20 תווים'),
             ],
           ),
         ),

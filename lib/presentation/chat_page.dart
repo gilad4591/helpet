@@ -31,9 +31,9 @@ class ChatPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   FlatButton(
-                    color: Colors.brown[200],
+                    color: Colors.brown[300],
                     child: Container(
-                      width: 135,
+                      width: 175,
                       height: 40,
                       child: Row(
                         children: [
@@ -42,7 +42,7 @@ class ChatPage extends StatelessWidget {
                             color: Colors.white,
                           ),
                           Text(
-                            "הוסף צ'אט חדש",
+                            "חיה במצוקה? לחץ כאן",
                             style: TextStyle(color: Colors.white),
                           ),
                         ],
@@ -57,7 +57,7 @@ class ChatPage extends StatelessWidget {
                     width: 20,
                   ),
                   FlatButton(
-                    color: Colors.brown[200],
+                    color: Colors.brown[300],
                     child: Container(
                       width: 135,
                       height: 40,
@@ -81,6 +81,20 @@ class ChatPage extends StatelessWidget {
                 ],
               ),
             ),
+            Column(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: 10),
+                Text(
+                  "שלום, " + name,
+                  style: TextStyle(
+                    color: Colors.brown,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ],
+            ),
             SizedBox(
               height: 100,
             ),
@@ -96,7 +110,7 @@ class ChatPage extends StatelessWidget {
                       .collection('chats_' + region)
                       .orderBy(
                         'Date',
-                        // descending: true,
+                        descending: true,
                       )
                       .snapshots(),
                   builder: (context, chatSnapshot) {
@@ -123,6 +137,7 @@ class ChatPage extends StatelessWidget {
                           region,
                           chat['creatorName'].toString(),
                           chat['Date'],
+                          chat['handled'],
                         );
                       }).toList()),
                     );
@@ -137,7 +152,7 @@ class ChatPage extends StatelessWidget {
 
 class MessageListTile extends StatelessWidget {
   const MessageListTile(this.index, this.subject, this.city, this.text, this.id,
-      this.myName, this.region, this.creatorName, this.date,
+      this.myName, this.region, this.creatorName, this.date, this.handled,
       {Key key})
       : super(key: key);
   final String id;
@@ -149,6 +164,7 @@ class MessageListTile extends StatelessWidget {
   final String text;
   final String creatorName;
   final Timestamp date;
+  final String handled;
 
   @override
   Widget build(BuildContext context) {
@@ -165,15 +181,17 @@ class MessageListTile extends StatelessWidget {
           'creatorName': creatorName,
           'text': text,
           'date': formattedDate,
+          'handled': handled,
         });
       },
       child: Container(
         width: 600,
         height: 50,
-        color: index % 2 == 0 ? Colors.brown[200] : Colors.white,
+        color: index % 2 == 0 ? Colors.brown[300] : Colors.white,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            Text(handled),
             Text(city),
             Container(
               width: 150,

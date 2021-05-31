@@ -119,7 +119,7 @@ class _TextFieldsEditorState extends State<TextFieldsEditor> {
                 Row(
                   children: [
                     FlatButton(
-                      color: Colors.brown[200],
+                      color: Colors.brown[300],
                       child: Container(
                         width: 135,
                         height: 50,
@@ -151,7 +151,7 @@ class _TextFieldsEditorState extends State<TextFieldsEditor> {
                       width: MediaQuery.of(context).size.width * 0.01,
                     ),
                     FlatButton(
-                      color: Colors.brown[200],
+                      color: Colors.brown[300],
                       child: Container(
                         width: 135,
                         height: 50,
@@ -197,6 +197,7 @@ class _TextFieldsEditorState extends State<TextFieldsEditor> {
       'Text': values['Text'].toString(),
       'Subject': values['Subject'].toString(),
       'creatorName': name,
+      'handled': 'לא טופל',
     });
   }
 }
