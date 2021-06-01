@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <!--
+    <!--
     If you are serving your web app in a path other than the root, change the
     href value below to reflect the base path you are serving from.
 
@@ -11,59 +12,54 @@
     Fore more details:
     * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
   -->
-  <base href="/">
+    <base href="/">
 
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+    <meta charset="UTF-8">
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+    <meta name="description" content="A new Flutter project.">
 
-  <!-- iOS meta tags & icons -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="helpet">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+    <!-- iOS meta tags & icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="helpet">
+    <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png" />
 
-  <title>helpet</title>
-  <link rel="manifest" href="manifest.json">
+    <title>helpet</title>
+    <link rel="manifest" href="manifest.json">
 </head>
+
 <body>
-  <!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="/__/firebase/8.6.3/firebase-app.js"></script>
-
-<!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
-
-<!-- Initialize Firebase -->
-<script src="/__/firebase/init.js"></script>
-  <!-- This script installs service_worker.js to provide PWA functionality to
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('flutter-first-frame', function () {
-        navigator.serviceWorker.register('flutter_service_worker.js');
-      });
-    }
-  </script>
-  <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
-   <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-firestore.js"></script>
-  <script src="main.dart.js" type="application/javascript"></script>
-  <script>
-    // TODO: Replace the following with your app's Firebase project configuration.
-    // See: https://support.google.com/firebase/answer/7015592
-    const firebaseConfig =  {
-    apiKey: "AIzaSyBmEY8rpLo4ecwNwQXG5QtByl0whdKGOOc",
-    authDomain: "helpet-israel.firebaseapp.com",
-    projectId: "helpet-israel",
-    storageBucket: "helpet-israel.appspot.com",
-    messagingSenderId: "262236756338",
-    appId: "1:262236756338:web:5400b254db1b599bbb25eb"
-  };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-  </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('flutter-first-frame', function() {
+                navigator.serviceWorker.register('flutter_service_worker.js');
+            });
+        }
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-firestore.js"></script>
+    <script>
+        // TODO: Replace the following with your app's Firebase project configuration.
+        // See: https://support.google.com/firebase/answer/7015592
+        const firebaseConfig = {
+            apiKey: "AIzaSyBmEY8rpLo4ecwNwQXG5QtByl0whdKGOOc",
+            authDomain: "helpet-israel.firebaseapp.com",
+            projectId: "helpet-israel",
+            storageBucket: "helpet-israel.appspot.com",
+            messagingSenderId: "262236756338",
+            appId: "1:262236756338:web:5400b254db1b599bbb25eb"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+    <script src="main.dart.js" type="application/javascript"></script>
 </body>
+
 </html>
